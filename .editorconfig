@@ -94,8 +94,9 @@ dotnet_sort_system_directives_first = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#newline
 # Use K&R/Stroustrup style https://en.wikipedia.org/wiki/Indentation_style#K&R.
-# It is more compact than Allman (Visual Studio default) but just as readable.
-csharp_new_line_before_open_brace = types,methods,properties,events,indexers
+# It is more compact than Allman (Visual Studio default).
+# If you feel your code is not readable without additional lines, focus on making it simpler.
+csharp_new_line_before_open_brace = none
 csharp_new_line_before_else = true
 csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
