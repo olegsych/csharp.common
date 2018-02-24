@@ -93,9 +93,9 @@ csharp_prefer_braces = false:suggestion
 dotnet_sort_system_directives_first = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#newline
-# These are defaults
-# TODO: Think about changing brace style from Allman to K&R https://en.wikipedia.org/wiki/Indentation_style#K&R
-csharp_new_line_before_open_brace = all
+# Use K&R/Stroustrup style https://en.wikipedia.org/wiki/Indentation_style#K&R.
+# It is more compact than Allman (Visual Studio default) but just as readable.
+csharp_new_line_before_open_brace = types,methods,properties,events,indexers
 csharp_new_line_before_else = true
 csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
