@@ -1,9 +1,11 @@
 root = true
 
 [*]
+# Make git diff output clean and easy to read
 end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
+
 indent_style = space
 indent_size = 4
 
@@ -93,10 +95,14 @@ csharp_prefer_braces = false:suggestion
 dotnet_sort_system_directives_first = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#newline
-# Use K&R/Stroustrup style https://en.wikipedia.org/wiki/Indentation_style#K&R.
-# It is more compact than Allman (Visual Studio default).
-# If you feel your code is not readable without additional lines, focus on making it simpler.
-csharp_new_line_before_open_brace = none
+# Use K&R brace style instead of the Visual Studio default (Allman).
+# https://en.wikipedia.org/wiki/Indentation_style#K&R
+#
+# A new line before an open brace helps to visually separate the preceding line from the code block after the brace.
+# Don't use it for code blocks that should be short - conditional statements, properties, methods.
+# If you feel your code is not readable without new line, focus on making it simpler.
+# New line before an open brace is OK for types and namespaces. We don't expect them to be always short.
+csharp_new_line_before_open_brace = types
 csharp_new_line_before_else = true
 csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
