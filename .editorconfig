@@ -16,63 +16,82 @@ indent_size = 4
 # Visual Studio 2017 editor settings for C#
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
 # Follow Beck's simple design rules https://www.martinfowler.com/bliki/BeckDesignRules.html
-# to make code reveal intent, without duplication and fewest elements
+# to make the code reveal intent, without duplication and with fewest elements
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#this_and_me
-# Don't use "this." unlesss it's required to disambiguate variables
-dotnet_style_qualification_for_event = false:suggestion
-dotnet_style_qualification_for_field = false:suggestion
-dotnet_style_qualification_for_method = false:suggestion
-dotnet_style_qualification_for_property = false:suggestion
+# Don't use "this." unlesss it's required to disambiguate members.
+dotnet_style_qualification_for_event = false:error
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_property = false:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#language_keywords
 # Use built-in language types instead of framework type names
-dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
-dotnet_style_predefined_type_for_member_access = true:suggestion
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+dotnet_style_predefined_type_for_member_access = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#normalize_modifiers
 # Use default order of modifiers
 csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:error
+# Make fields readonly explicitly to encourage making classes immutable
+dotnet_style_readonly_field = true:error
 # Don't specify redundant private accessibility, it's the C# default.
 dotnet_style_require_accessibility_modifiers = never:error
+
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#parentheses
+# Dont't add parentheses for clarity. C# operation precedence should be clear for simple expressions.
+# Break up complex expressions into well-named variables and functions instead of adding parentheses.
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:error
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary:error
+dotnet_style_parentheses_in_other_binary_operators = never_if_unnecessary:error
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#expression_level
 # Use inline initializers instead of separate initialization statements
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_object_initializer = true:suggestion
 # Use tuple names instead of ItemX properties
-dotnet_style_explicit_tuple_names = true:suggestion
-# Use ?? instead of null checks
-dotnet_style_coalesce_expression = true:suggestion
-# Use .? instead of null checks
-dotnet_style_null_propagation = true:suggestion
-# Use inferred names for tuples and anonymous types
-dotnet_prefer_inferred_tuple_names = true:suggestion
-dotnet_prefer_inferred_anonymous_type_member_names = true:suggestion
+dotnet_style_explicit_tuple_names = true:error
+# Use inferred names for tuples and anonymous types. Name variables so that names can be inferred correctly.
+dotnet_style_prefer_inferred_tuple_names = true:error
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:error
+# Use auto properties instead of defining a backing field separately.
+dotnet_style_prefer_auto_properties = true:error
+# Use is null instead of ReferenceEquals because its more terse and just as readable.
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:error
+# Use ?: instead of if/else. Simplify code when if/else is needed for clarity.
+dotnet_style_prefer_conditional_expression_over_assignment = true:error
+dotnet_style_prefer_conditional_expression_over_return = true:error
 
-# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#var
-# Use var only when type is clearly specified in the statement
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#null_checking
+# Use .? instead of null checks
+dotnet_style_null_propagation = true:error
+# Use ?? instead of null checks
+dotnet_style_coalesce_expression = true:error
+
+# https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#implicit-and-explicit-types
+# Use variable types reveal intent. Use var only when type is clearly specified in the statement.
 csharp_style_var_when_type_is_apparent = true:suggestion
-csharp_style_var_for_built_in_types = false:suggestion
-csharp_style_var_elsewhere = false:suggestion
+csharp_style_var_for_built_in_types = false:error
+csharp_style_var_elsewhere = false:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#expression_bodied_members
 # Use expression-bodied members
-csharp_style_expression_bodied_accessors = true:suggestion
-csharp_style_expression_bodied_constructors = true:suggestion
-csharp_style_expression_bodied_indexers = true:suggestion
-csharp_style_expression_bodied_methods = true:suggestion
-csharp_style_expression_bodied_operators = true:suggestion
-csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_accessors = when_on_single_line:error
+csharp_style_expression_bodied_constructors = when_on_single_line:error
+csharp_style_expression_bodied_indexers = when_on_single_line:error
+csharp_style_expression_bodied_methods = when_on_single_line:error
+csharp_style_expression_bodied_operators = when_on_single_line:error
+csharp_style_expression_bodied_properties = when_on_single_line:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#pattern_matching
 # Use pattern matching
-csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
-csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:error
+csharp_style_pattern_matching_over_is_with_cast_check = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#inlined_variable_declarations
 # Declare out variables inline
-csharp_style_inlined_variable_declaration = true:suggestion
+csharp_style_inlined_variable_declaration = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#expression_level_csharp
 # Use default instead of default(TypeName)
@@ -80,21 +99,23 @@ csharp_prefer_simple_default_expression = true:suggestion
 # Deconstruct tuples into variables to use <var> instead of <tuple>.<var>
 csharp_style_deconstructed_variable_declaration = true:suggestion
 # Use local functions instead of anonymous functions for better readability
-csharp_style_pattern_local_over_anonymous_function = true:suggestion
+csharp_style_pattern_local_over_anonymous_function = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#null_checking
 # Use variable ?? throw ... instead of if (variable == null) { throw ... }
-csharp_style_throw_expression = true:suggestion
+csharp_style_throw_expression = true:error
 # Use ?.Invoke instead of if (variable == null) { variable.Incoke(...) }
-csharp_style_conditional_delegate_call = true:suggestion
+csharp_style_conditional_delegate_call = true:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#code_block
 # Don't use braces for single-line statements. When nesting control flow statements, extract method instead of adding braces.
-csharp_prefer_braces = false:suggestion
+csharp_prefer_braces = false:error
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#usings
 # Place System namespaces first in the using blocks to move your own namespaces closer to your code
-dotnet_sort_system_directives_first = true:error
+dotnet_sort_system_directives_first = true
+# Don't separate using directives into multiple blocks. When the using list becomes too long, split the type instead.
+dotnet_separate_import_directive_groups = false
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#newline
 # Use K&R brace style instead of the Visual Studio default (Allman).
@@ -125,9 +146,14 @@ csharp_space_after_keywords_in_control_flow_statements = false
 csharp_space_between_method_declaration_parameter_list_parentheses = false
 csharp_space_between_method_call_parameter_list_parentheses = false
 csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = false
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
 
 # https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference#a-namewrappingwrapping-optionsa
-# These are defaults
-# TODO: Think about setting csharp_preserve_single_line_statements = false to place multiple single-line statements on separate lines
-csharp_preserve_single_line_statements = true
+# Separate multiple variable declarations on separate lines
+csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
