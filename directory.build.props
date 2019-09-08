@@ -1,0 +1,11 @@
+<Project>
+  <!--
+    Common build properties for all MSBuild projects in this directory and below.
+    https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#directorybuildprops-and-directorybuildtargets
+  -->
+  <PropertyGroup>
+    <!-- Place all build outputs in the root of the repository instead of nested project directories -->
+    <BaseOutputPath>$(MSBuildThisFileDirectory)bin\</BaseOutputPath>
+    <IntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
+  </PropertyGroup>
+</Project>
