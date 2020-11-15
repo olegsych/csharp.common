@@ -11,6 +11,10 @@ end_of_line = unset
 indent_style = space
 indent_size = 4
 
+# https://marketplace.visualstudio.com/items?itemName=PaulHarrington.EditorGuidelines
+# Don't wrap text before column 80 but do before column 160.
+guidelines = 80 1px dotted green, 160 1px dotted red
+
 [*.cs]
 
 # Visual Studio 2019 editor settings for C#
