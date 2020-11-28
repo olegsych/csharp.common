@@ -9,7 +9,7 @@ If you are running your development tools as administrator, you already have it.
 If your run your tools without elevation, you can get it by 
 [enabling Developer mode](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development#accessing-settings-for-developers).
 
-# add submodule
+# add submodule to repository
 ```
 mkdir modules
 cd modules
@@ -18,7 +18,7 @@ git commit
 cd ..
 ```
 
-# link shared files
+# add shared files to repository
 ```
 cmd /c mklink .editorconfig .\modules\csharp.common\.editorconfig
 git add .editorconfig
@@ -35,17 +35,22 @@ git add directory.build.props
 git commit
 ```
 
-# clone
-
-Clone repository with submodules and symlinks.
+# clone repository with submodules and symlinks
 ```
 git clone --recurse-submodules -c core.symlinks=true <URL>
 ```
 
-Enable submodules and symlinks in previously cloned repositories.
+# enable submodules and symlinks in previously cloned repository
 ```
 git pull origin
 git config core.symlinks true
 git submodule init
 git submodule update
+```
+
+# update submodule to latest version
+```
+git submodule update --remote
+git add .
+git commit
 ```
