@@ -18,4 +18,18 @@
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <!-- Common NuGet package settings -->
+  <PropertyGroup Condition="'$(IsPackable)'!='false'">
+    <Authors>Oleg Sych</Authors>
+    <Version Condition="'$(APPVEYOR)' == 'True'">$(APPVEYOR_BUILD_VERSION)</Version>
+    <Version Condition="'$(APPVEYOR)' != 'True'">0.0.0</Version>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IsPackable)'!='false'">
+    <!-- Make symbols and source code available to package users in Visual Studio Debugger -->
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
 </Project>
