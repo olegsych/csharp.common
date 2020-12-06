@@ -29,6 +29,9 @@ git add .gitattributes
 cmd /c mklink .gitignore .\modules\csharp.common\.gitignore
 git add .gitignore
 
+cmd /c mklink StrongName.snk .\modules\csharp.common\StrongName.snk
+git add StrongName.snk
+
 cmd /c mklink directory.build.props .\modules\csharp.common\directory.build.props
 git add directory.build.props
 

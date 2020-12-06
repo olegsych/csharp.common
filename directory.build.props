@@ -10,6 +10,9 @@
     <!-- Use latest C# features, including nullable reference types -->
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
+    <!-- https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\StrongName.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
