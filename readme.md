@@ -1,6 +1,8 @@
 Common editor configuration and build infrastructure for C# projects.
 
-Use the shared files directly from this repository and get future changes with a [symbolic links](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365680.aspx) from a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+Use the shared files directly from this repository and get future changes with
+[symbolic links](https://msdn.microsoft.com/en-us/library/windows/desktop/aa365680.aspx)
+from a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
 # permissions
 
@@ -14,7 +16,7 @@ If your run your tools without elevation, you can get it by
 mkdir modules
 cd modules
 git submodule add https://github.com/olegsych/csharp.common.git
-git commit
+git commit -m 'Add modules/csharp.common'
 cd ..
 ```
 
@@ -35,12 +37,17 @@ git add StrongName.snk
 cmd /c mklink directory.build.props .\modules\csharp.common\directory.build.props
 git add directory.build.props
 
-git commit
+git commit -m 'Link files from modules/csharp.common'
 ```
 
 # clone repository with submodules and symlinks
 ```
 git clone --recurse-submodules -c core.symlinks=true <URL>
+```
+
+# Enable recursion into submodules by default
+```
+git config --global submodule.recurse true
 ```
 
 # enable submodules and symlinks in previously cloned repository
@@ -55,5 +62,5 @@ git submodule update
 ```
 git submodule update --remote
 git add .
-git commit
+git commit -m 'Update modules/csharp.common to latest version'
 ```
