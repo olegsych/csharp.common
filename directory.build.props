@@ -14,29 +14,27 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\StrongName.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-
   <PropertyGroup>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-
   <!-- Common NuGet package settings -->
   <PropertyGroup Condition="'$(IsPackable)'!='false'">
     <Authors>Oleg Sych</Authors>
-    <Version Condition="'$(APPVEYOR)' == 'True'">$(APPVEYOR_BUILD_VERSION)</Version>
-    <Version Condition="'$(APPVEYOR)' != 'True'">0.0.0</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <NBGV_EmitThisAssemblyClass>false</NBGV_EmitThisAssemblyClass>
   </PropertyGroup>
   <ItemGroup Condition="'$(IsPackable)'!='false'">
     <!-- Make symbols and source code available to package users in Visual Studio Debugger -->
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <!-- Generate package versions based on Git commit history -->
+    <PackageReference Include="Nerdbank.GitVersioning" Version="3.*" PrivateAssets="All" />
   </ItemGroup>
 </Project>
