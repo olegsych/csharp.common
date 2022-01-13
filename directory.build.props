@@ -13,6 +13,14 @@
     <!-- https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming -->
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\StrongName.snk</AssemblyOriginatorKeyFile>
+
+    <!-- Standard namespace and assembly names -->
+    <!-- Supported by MSBuild, but not by Visual Studio -->
+    <CompanyName>Athene</CompanyName>
+    <ProductName Condition="$(MSBuildProjectName.Contains('.')) == false">$(MSBuildProjectName)</ProductName>
+    <ProductName Condition="$(MSBuildProjectName.Contains('.')) == true">$(MSBuildProjectName.Substring(0, $(MSBuildProjectName.IndexOf('.'))))</ProductName>
+    <AssemblyName>$(CompanyName).$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(CompanyName).$(ProductName)</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
