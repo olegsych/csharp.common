@@ -4,6 +4,7 @@ root = true
 # Make git diff output clean and easy to read
 trim_trailing_whitespace = true
 insert_final_newline = true
+charset = latin1
 
 # Don't attempt the impossible. Let Visual Studio use CRLF and rely on .gitattributes to normalize line endings.
 end_of_line = unset
