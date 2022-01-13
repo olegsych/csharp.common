@@ -15,6 +15,10 @@ indent_size = 4
 # Don't wrap text before column 80 but do before column 160.
 guidelines = 80 1px dotted green, 160 1px dotted red
 
+[*.csproj]
+# Use smaller indentation for XML where angle brackets themselves add 1-2 spaces.
+indent_size = 2
+
 [*.cs]
 
 # Visual Studio 2019 editor settings for C#
