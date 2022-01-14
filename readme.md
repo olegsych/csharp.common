@@ -22,21 +22,15 @@ cd ..
 
 # add shared files to repository
 ```
+copy .\modules\csharp.common\.gitattributes .\
+copy .\modules\csharp.common\.gitignore .\
+git add .
+git commit -m 'Copy files from modules/csharp.common that can no longer be symlinked by Git 2.32+'
+
 cmd /c mklink .editorconfig .\modules\csharp.common\.editorconfig
-git add .editorconfig
-
-cmd /c mklink .gitattributes .\modules\csharp.common\.gitattributes
-git add .gitattributes
-
-cmd /c mklink .gitignore .\modules\csharp.common\.gitignore
-git add .gitignore
-
 cmd /c mklink StrongName.snk .\modules\csharp.common\StrongName.snk
-git add StrongName.snk
-
 cmd /c mklink directory.build.props .\modules\csharp.common\directory.build.props
-git add directory.build.props
-
+git add .
 git commit -m 'Link files from modules/csharp.common'
 ```
 
