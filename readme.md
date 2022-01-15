@@ -28,9 +28,10 @@ git add .
 git commit -m 'Copy files from modules/csharp.common that can no longer be symlinked by Git 2.32+'
 
 mkdir src
-cd src
-cmd /c mklink version.json ..\modules\csharp.common\version.json
-cd ..
+copy .\modules\csharp.common\version.json .\src\
+git add .
+git commit -m 'Copy files from modules/csharp.common that cannot be symlinked by NerdBank'
+
 cmd /c mklink .editorconfig .\modules\csharp.common\.editorconfig
 cmd /c mklink StrongName.snk .\modules\csharp.common\StrongName.snk
 cmd /c mklink directory.build.props .\modules\csharp.common\directory.build.props
