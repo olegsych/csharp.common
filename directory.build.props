@@ -22,8 +22,8 @@
   <!-- Common NuGet package settings -->
   <PropertyGroup Condition="'$(IsPackable)'!='false'">
     <Authors>Oleg Sych</Authors>
-    <Version Condition="'$(APPVEYOR)' == 'True'">$(APPVEYOR_BUILD_VERSION)</Version>
-    <Version Condition="'$(APPVEYOR)' != 'True'">0.0.0</Version>
+    <Version Condition="'$(GITHUB_RUN_NUMBER)' != ''">0.2.$(GITHUB_RUN_NUMBER)</Version>
+    <Version Condition="'$(GITHUB_RUN_NUMBER)' == ''">0.0.0</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
