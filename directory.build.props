@@ -28,8 +28,4 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  <ItemGroup Condition="'$(IsPackable)'!='false'">
-    <!-- Make symbols and source code available to package users in Visual Studio Debugger -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
 </Project>
