@@ -22,8 +22,6 @@
   <!-- Common NuGet package settings -->
   <PropertyGroup Condition="'$(IsPackable)'!='false'">
     <Authors>Oleg Sych</Authors>
-    <Version Condition="'$(GITHUB_RUN_NUMBER)' != ''">0.2.$(GITHUB_RUN_NUMBER)</Version>
-    <Version Condition="'$(GITHUB_RUN_NUMBER)' == ''">0.0.0</Version>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
