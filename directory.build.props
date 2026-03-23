@@ -46,10 +46,4 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <NBGV_EmitThisAssemblyClass>false</NBGV_EmitThisAssemblyClass>
   </PropertyGroup>
-  <ItemGroup Condition="'$(IsPackable)'!='false'">
-    <!-- Make symbols and source code available to package users in Visual Studio Debugger -->
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
-    <!-- Generate package versions based on Git commit history -->
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.*" PrivateAssets="All" />
-  </ItemGroup>
 </Project>
