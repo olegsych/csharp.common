@@ -32,8 +32,8 @@ git add .gitignore
 cmd /c mklink StrongName.snk .\modules\csharp.common\StrongName.snk
 git add StrongName.snk
 
-cmd /c mklink directory.build.props .\modules\csharp.common\directory.build.props
-git add directory.build.props
+cmd /c mklink Directory.Build.props .\modules\csharp.common\Directory.Build.props
+git add Directory.Build.props
 
 git commit
 ```
