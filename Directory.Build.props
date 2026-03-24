@@ -1,29 +1,22 @@
 <Project>
   <!--
     Common build properties for all MSBuild projects in this directory and below.
-    https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019#directorybuildprops-and-directorybuildtargets
+    https://docs.microsoft.com/visualstudio/msbuild/customize-your-build
   -->
   <PropertyGroup>
     <!-- Place all build outputs in the root of the repository instead of nested project directories -->
     <BaseOutputPath>$(MSBuildThisFileDirectory)bin\</BaseOutputPath>
     <IntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
-    <!-- Use latest C# features, including nullable reference types -->
+    <VSTestResultsDirectory>$(MSBuildThisFileDirectory)out\tests\</VSTestResultsDirectory>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)out\packages\</PackageOutputPath>
+
+    <!-- https://learn.microsoft.com/dotnet/csharp/language-reference/compiler-options/ -->
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <!-- https://docs.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming -->
+    <TreatWarningsAsErrors Condition="'$(Configuration)'=='Release'">true</TreatWarningsAsErrors>
+
+    <!-- https://learn.microsoft.com/dotnet/standard/library-guidance/strong-naming -->
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\StrongName.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-
-  <!-- Common NuGet package settings -->
-  <PropertyGroup Condition="'$(IsPackable)'!='false'">
-    <Authors>Oleg Sych</Authors>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 </Project>
