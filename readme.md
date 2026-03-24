@@ -23,10 +23,10 @@ cd ..
 cmd /c mklink .editorconfig .\modules\csharp.common\.editorconfig
 git add .editorconfig
 
-cmd /c mklink .gitattributes .\modules\csharp.common\.gitattributes
+copy .\modules\csharp.common\.gitattributes .\.gitattributes
 git add .gitattributes
 
-cmd /c mklink .gitignore .\modules\csharp.common\.gitignore
+copy .\modules\csharp.common\.gitignore .\.gitignore
 git add .gitignore
 
 cmd /c mklink StrongName.snk .\modules\csharp.common\StrongName.snk
