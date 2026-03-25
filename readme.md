@@ -38,6 +38,10 @@ git add Directory.Build.props
 cmd /c mklink Directory.Build.targets .\modules\csharp.common\Directory.Build.targets
 git add Directory.Build.targets
 
+cd .github
+cmd /c mklink /D instructions ..\modules\csharp.common\.github\instructions
+git add instructions
+
 git commit
 ```
 
