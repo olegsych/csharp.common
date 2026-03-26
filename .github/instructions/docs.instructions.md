@@ -5,8 +5,9 @@ applyTo: "**/*.cs"
 
 # C# documentation guidance
 
-- Document public members with [XML comments](https://learn.microsoft.com/dotnet/csharp/language-reference/language-specification/documentation-comments).
+- Document public and protected members with [XML comments](https://learn.microsoft.com/dotnet/csharp/language-reference/language-specification/documentation-comments).
 - Document internal members only if they are complex or not self-explanatory.
+- When removing unnecessary XML comments, preserve significant information as regular comments.
 - Always try to simplify APIs before resorting to documenting them.
 - Write documentation for intermediate to advanced C# developer audience.
 - Make documentation as concise as possible without losing information.
@@ -21,11 +22,14 @@ applyTo: "**/*.cs"
     Add the language of the code example using the `language` attribute, for example, `<code language="csharp">`.
 - Use `<see cref="..."/>` to reference other types or members inline (in a sentence).
 - Use `<seealso cref="..."/>` for standalone (not in a sentence) references to other types or members in the "See also" section of the online docs.
-- Use `<inheritdoc/>` to inherit documentation from base classes or interfaces.
-  - Unless there is major behavior change, in which case you should document the differences.
+- Reuse documentation from other types and members to keep duplication to a minimum.
+  - Use `<inheritdoc/>` for interface implementations and overrides unless there is a major behavior change.
+  - Use `<inheritdoc cref="..."/>` to reuse documentation from related types, like the base type, and members, like method overloads.
+  - Document differences instead of using `<inheritdoc/>` when there is a major behavior change.
 - Use `<para>` when multiple paragraphs are needed to make a documentation section readable.
   - Never use `<para>` in single-paragraph sections.
 - For generic overloads, don't add "strongly-typed" or similar qualifiers to distinguish them from non-generic overloads. Let the type parameter references speak for themselves.
+- Prefer short type names in the `cref="..."` references. If the type's namespace is not imported, add a `using` directive rather than using a fully-qualified name.
 
 ## Methods
 
@@ -57,6 +61,7 @@ applyTo: "**/*.cs"
 - The `<summary>` should start with:
   - "Gets or sets..." for a read-write property.
   - "Gets..." for a read-only property.
+  - "Sets..." for a set-only property.
   - "Gets [or sets] a value that indicates whether..." for properties that return a Boolean value.
 - Use `<value>` to describe the value of the property, but only if it doesn't restate the `<summary>`.
   - The description should be a noun phrase that doesn't specify the data type.
@@ -72,5 +77,5 @@ applyTo: "**/*.cs"
 - Use `<exception cref="...">` to document exceptions thrown by constructors, properties, indexers, methods, operators, and events.
 - Document all exceptions thrown directly by the member.
 - For exceptions thrown by nested members, document only the exceptions users are most likely to encounter.
-- The description of the exception describes the condition under which it's thrown.
-  - Omit "Thrown if ..." or "If ..." at the beginning of the sentence. Just state the condition directly, for example "An error occurred when accessing a Message Queuing API."
+- Describe the condition under which it's thrown.
+  - Omit "Thrown if ..." or "If ..." at the beginning of the sentence.
