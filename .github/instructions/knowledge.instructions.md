@@ -1,21 +1,33 @@
 ---
-description: "Use when modifying code to understand project conventions, contribution guidelines, and to capture feedback."
+description: "Always use when modifying or reviewing any files."
 applyTo: "**"
 ---
 
-# Project Context
+# Understand Project Context
 
-Before making changes, find and read the `README.md` and `CONTRIBUTING.md` files closest to the files being modified. Walk up from the file's directory to the repository root, stopping at the first match for each.
+Find and read the `README.md` and `CONTRIBUTING.md` files closest to the files being modified or reviewed. Walk up from the file's directory to the repository root, stopping at the first match for each.
 
 # Capture Insights from Feedback
 
-When receiving corrections, preferences, recurring feedback or pattern worth remembering — whether during interactive chats or code reviews — proactively capture reusable insights so they don't need to be repeated.
+- Evaluate all feedback received in interactive chats and code reviews to identify key insights and guidelines that will be important in future sessions. 
+- Watch for key insights and guidelines expressed as
+  - Phrases like `always`, `never`, `make sure`, `you should`, `why didn't you`.
+  - Multiple requests to fix similar problems. 
+- Don't codify trivial one-off corrections, only high-confidence insights.
+- Ask for clarification and confirmation when in doubt.
 
-- Capture the underlying preference or project convention, not just the specific correction.
-- Don't codify trivial one-off corrections — only insights useful in future conversations.
-- Store human-readable instructions in the `CONTRIBUTING.md` files
-  - Place project-specific instructions the project directory.
-  - Place repository-specific instructions in the root directory.
-- Store general instructions applicable across multiple repositories in the `.instructions.md` files.
-- Store repository-specific instructions needed by agents but redundant for humans in the `copilot-instructions.md` file.
+# Organize Knowledge for Humans
 
+- Store human-readable insights and guidelines in the `CONTRIBUTING.md` files.
+  - Place repository-wide content in the `CONTRIBUTING.md` file in the root directory.
+  - When repository contains multiple product projects (as opposed to test or example projects), place project-specific content the project directory.
+- Store general instructions applicable across multiple repositories, such as coding style, methodology, etc. in the `.instructions.md` files.
+- Your audience is experienced engineers. Don't restate the obvious.
+- Avoid duplicating information readily available from the source code.
+- Check `.md` files for accuracy and redundancy during code reviews.
+
+# Ensure Knowledge Available to Agents
+
+Make sure `copilot-instructions.md` contains minimal instructions required for agents to discover the available knowledge.
+= Instructions to checkout submodules checkout, if any.
+- Instructions to read `README.md` and `CONTRIBUTING.md` files.
