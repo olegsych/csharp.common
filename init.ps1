@@ -25,19 +25,20 @@ $ErrorActionPreference = 'Stop'
 # Paths relative to both roots; symlinks track csharp.common, copies are owned by consumer.
 [string[]] $Symlinks = @(
     '.editorconfig',
-    'StrongName.snk',
+    '.github/agents',
+    '.github/instructions',
+    '.github/prompts',
+    '.github/skills',
     'Directory.Build.props',
     'Directory.Build.targets',
-    '.github/instructions',
-    '.github/agents',
-    '.github/prompts',
-    '.github/skills'
+    'global.json',
+    'StrongName.snk'
 )
 
 [string[]] $Copies = @(
     '.gitattributes',
-    '.gitignore',
-    '.github/copilot-instructions.md'
+    '.github/copilot-instructions.md',
+    '.gitignore'
 )
 
 function Main {
