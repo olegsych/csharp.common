@@ -7,7 +7,8 @@
     <!-- Place all build outputs in the root of the repository instead of nested project directories -->
     <BaseOutputPath>$(MSBuildThisFileDirectory)bin\</BaseOutputPath>
     <IntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(Configuration)\$(MSBuildProjectName)\</IntermediateOutputPath>
-    <VSTestResultsDirectory>$(MSBuildThisFileDirectory)out\tests\</VSTestResultsDirectory>
+    <TestResultsDirectory>$(MSBuildThisFileDirectory)out\tests\</TestResultsDirectory>
+    <TestingPlatformCommandLineArguments>$(TestingPlatformCommandLineArguments) --results-directory $(TestResultsDirectory) --report-xunit-trx --report-xunit-trx-filename $(MSBuildProjectName)-$(TargetFramework).trx</TestingPlatformCommandLineArguments>
     <PackageOutputPath>$(MSBuildThisFileDirectory)out\packages\</PackageOutputPath>
 
     <!-- https://learn.microsoft.com/dotnet/csharp/language-reference/compiler-options/ -->
