@@ -14,34 +14,8 @@ If your run your tools without elevation, you can get it by
 mkdir modules
 cd modules
 git submodule add https://github.com/olegsych/csharp.common.git
-git commit
 cd ..
-```
-
-# add shared files to repository
-```
-cmd /c mklink .editorconfig .\modules\csharp.common\.editorconfig
-git add .editorconfig
-
-copy .\modules\csharp.common\.gitattributes .\.gitattributes
-git add .gitattributes
-
-copy .\modules\csharp.common\.gitignore .\.gitignore
-git add .gitignore
-
-cmd /c mklink StrongName.snk .\modules\csharp.common\StrongName.snk
-git add StrongName.snk
-
-cmd /c mklink Directory.Build.props .\modules\csharp.common\Directory.Build.props
-git add Directory.Build.props
-
-cmd /c mklink Directory.Build.targets .\modules\csharp.common\Directory.Build.targets
-git add Directory.Build.targets
-
-cd .github
-cmd /c mklink /D instructions ..\modules\csharp.common\.github\instructions\
-git add instructions
-
+.\modules\csharp.common\init.ps1
 git commit
 ```
 
@@ -61,6 +35,6 @@ git submodule update
 # update submodule to latest version
 ```
 git submodule update --remote
-git add .
+.\modules\csharp.common\init.ps1
 git commit
 ```
