@@ -17,4 +17,4 @@
   Ask the user to `/clear`, start new session with model in the required cost tier and repeat the request.
 - **Include supporting evidence or say `I assume...` when answering questions**. Do not prioritize brevity over accuracy.
 - **Do not use user memory files for this repo**. Follow `knowledge.instructions.md` instead.
-- **Create temporary scratch files in the `tmp` directory**.
+- **Place temporary scratch files in the `tmp` directory**.
