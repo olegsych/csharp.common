@@ -9,9 +9,13 @@
   <PropertyGroup Condition="'$(IsPackable)' == 'true'">
     <Authors>Oleg Sych</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols Condition="'$(IncludeSymbols)' == ''">true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$([MSBuild]::GetPathOfFileAbove('README.md'))" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
