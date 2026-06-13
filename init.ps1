@@ -31,6 +31,8 @@ $ErrorActionPreference = 'Stop'
     '.github/skills',
     'Directory.Build.props',
     'Directory.Build.targets',
+    'init.cmd',
+    'init.sh',
     'global.json',
     'StrongName.snk'
 )
