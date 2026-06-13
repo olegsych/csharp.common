@@ -10,6 +10,9 @@ applyTo: "**/*.cs"
 
 - Follow [.NET Framework Design Guidelines](https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/) unless overridden by the rules below.
 - Pay attention to the `file_header_template` setting in `.editorconfig`; existing files may have legacy headers that differ from the template.
+- Don't suppress compiler, analyzer or style warnings in code - fix them instead.
+  `.instructions.md` files must be consistent with the `.editorconfig`, but some rules may be interpreted differently by
+  the C# tooling. When this happens, accept tooling's interpretation.
 
 ## Make the code as informative and intuitive as possible
 
@@ -19,6 +22,9 @@ applyTo: "**/*.cs"
   Types should be as immutable as possible. `readonly` helps to communicate and enforce that. While `volatile` doesn't guarantee
   thread safety, it helps to communicate that a field can be modified by multiple threads. Legitimate use of mutable types
   that don't need thread safety is rare, so a field that's neither `readonly` nor `volatile` usually indicates a design problem 
+- **Make types, members and lambdas `static` if possible**.
+  Types that can't be instantiated, members that don't need instance state and lambdas that don't need to capture variables
+  should be static to communicate this explicitly and encourage thread-safety and efficiency.
 - **Make types and members `abstract` or `sealed` if possible**.
   Inheritance is a first-class design consideration and should be communicated as an explicit contract.
 - **Make member visibility specifiers represent the actual member visibility**.
@@ -41,19 +47,15 @@ applyTo: "**/*.cs"
       void IDisposable.Dispose() {}
   }
   ```
-- **Specify variable type explicitly. Use `var` to prevent duplication of the variable type in the initialization expression**.
-  This helps the reader understand the code without having to lookup the actual type.
+- **Specify variable type explicitly unless it's obvious**. This helps the reader understand the code without having to lookup the type.
+  Instead of ❌`var foo = Environment.GetEnvironmentVariable("foo");` do ✅`string? foo = Environment.GetEnvironmentVariable("foo");`.
+  - _Use `var` to prevent duplication of the variable type in the initialization expression_.
+    Instead of ❌`DateTime today = DateTime.Today;` do ✅`var today = DateTime.Today;`
+  - _Prefer explicitly-typed variables with target-typed `new()` expressions_ over the more verbose `var` syntax.
+    Instead of ❌`var bar = new Bar();` do ✅`Bar bar = new();`
 
-  ❌ Instead of this:
-  ```csharp
-  var foo = Environment.GetEnvironmentVariable("foo");
-  DateTime today = DateTime.Today;
-  ```
-  ✅ Do this:
-  ```csharp
-  string? foo = Environment.GetEnvironmentVariable("foo");
-  var today = DateTime.Today;
-  ```
+- **Don't use target-typed `new()` expressions when the type is not apparent** and requires reader to look it up elsewhere,
+  such as when initializing a field declared separately. Instead of ❌`baz = new();` do ✅`baz = new Baz();`
 
 ## Make the code as concise as possible
 
