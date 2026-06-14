@@ -15,6 +15,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(OutputType)' == 'Exe' and !$([MSBuild]::IsOSPlatform('Windows'))">
+    <!-- Skip NetFx tests on Linux, they require Mono to run -->
+    <IsTestingPlatformApplication Condition="$(TargetFramework.StartsWith('net4'))">false</IsTestingPlatformApplication>
+  </PropertyGroup>
   <ItemGroup Condition="'$(IsPackable)' == 'true'">
     <None Include="$([MSBuild]::GetPathOfFileAbove('README.md'))" Pack="true" PackagePath="\" />
   </ItemGroup>
