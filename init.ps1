@@ -40,6 +40,8 @@ $ErrorActionPreference = 'Stop'
 [string[]] $Copies = @(
     '.gitattributes',
     '.github/copilot-instructions.md',
+    '.github/workflows/build.yml',
+    '.github/workflows/copilot-setup-steps.yml',
     '.gitignore'
 )
 
