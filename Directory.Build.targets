@@ -1,25 +1,48 @@
 <Project>
   <!-- Set properties that require well-known properties not available in Directory.Build.props -->
 
-  <!-- Common NuGet package settings -->
   <PropertyGroup Condition="'$(IsPackable)' == ''">
     <IsPackable Condition="'$(OutputType)' == 'Library'">true</IsPackable>
     <IsPackable Condition="'$(OutputType)' == 'Exe'">false</IsPackable>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
-    <Authors>Oleg Sych</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <IncludeSymbols Condition="'$(IncludeSymbols)' == ''">true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(OutputType)' == 'Exe' and !$([MSBuild]::IsOSPlatform('Windows'))">
-    <!-- Skip NetFx tests on Linux, they require Mono to run -->
-    <IsTestingPlatformApplication Condition="$(TargetFramework.StartsWith('net4'))">false</IsTestingPlatformApplication>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(IsPackable)' == 'true'">
-    <None Include="$([MSBuild]::GetPathOfFileAbove('README.md'))" Pack="true" PackagePath="\" />
-  </ItemGroup>
+
+  <Choose>
+    <!-- Common NuGet package settings -->
+    <When Condition="'$(IsPackable)' == 'true'">
+      <PropertyGroup>
+        <Authors>Oleg Sych</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols Condition="'$(IncludeSymbols)' == ''">true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <DocumentationFile>$(OutputPath)\$(AssemblyName).xml</DocumentationFile>
+      </PropertyGroup>
+      <ItemGroup>
+        <None Include="$([MSBuild]::GetPathOfFileAbove('README.md'))" Pack="true" PackagePath="\" />
+      </ItemGroup>
+    </When>
+
+    <!-- Common test settings -->
+    <When Condition="'$(OutputType)' == 'Exe'">
+      <PropertyGroup Condition="'$(CI)' == 'true'">
+        <TestResults Condition="'$(TestResults)' == ''">true</TestResults>
+        <TestCoverage Condition="'$(TestCoverage)' == '' and '$(MSBuildProjectName)' != 'Examples'">true</TestCoverage>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="!$([MSBuild]::IsOSPlatform('Windows'))">
+        <!-- Skip NetFx tests on Linux, they require Mono to run -->
+        <IsTestingPlatformApplication Condition="$(TargetFramework.StartsWith('net4'))">false</IsTestingPlatformApplication>
+      </PropertyGroup>
+
+      <PropertyGroup Condition="'$(TargetFramework)' != '' and ('$(TestResults)' == 'true' or '$(TestCoverage)' == 'true')">
+        <!-- Generate test results and coverage files when running in CI. -->
+        <TestResultsPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)out\tests'))</TestResultsPath>
+        <TestResultFileName>$(MSBuildProjectName)-$(TargetFramework)</TestResultFileName>
+        <TestingPlatformCommandLineArguments>--results-directory $(TestResultsPath)</TestingPlatformCommandLineArguments>
+        <TestingPlatformCommandLineArguments Condition="'$(TestResults)' == 'true'">$(TestingPlatformCommandLineArguments) --report-junit --report-junit-filename $(TestResultFileName).junit.xml</TestingPlatformCommandLineArguments>
+        <TestingPlatformCommandLineArguments Condition="'$(TestCoverage)' == 'true'">$(TestingPlatformCommandLineArguments) --coverage --coverage-output-format cobertura --coverage-output $(TestResultFileName).cobertura.xml</TestingPlatformCommandLineArguments>
+      </PropertyGroup>
+    </When>
+  </Choose>
 </Project>
