@@ -8,7 +8,7 @@ applyTo: "{**/*.cs,src/**/README.md,src/**/*.csproj}"
 
 # Documentation guidance
 
-- Write for an intermediate to advanced C# developers.
+- Write for intermediate to advanced C# developers.
 - Write documentation for the users, not the maintainers.
 - Make documentation as concise as possible without losing information.
 - Change phrasing to drop redundant words, for example `Returns red apples.` over `Returns apples of red color.`
@@ -47,12 +47,6 @@ applyTo: "{**/*.cs,src/**/README.md,src/**/*.csproj}"
     Add the language of the code example using the `language` attribute, for example, `<code language="csharp">`.
 - Use `<see cref="..."/>` to reference other types or members inline (in a sentence).
 - Use `<seealso cref="..."/>` for standalone (not in a sentence) references to other types or members in the "See also" section of the online docs.
-- Reuse documentation from other types and members to keep duplication to a minimum.
-  - Use `<inheritdoc/>` for interface implementations and overrides unless there is a major behavior change.
-  - Use `<inheritdoc cref="..."/>` to reuse documentation from related types, like the base type, and members, like method overloads.
-  - Apply object-oriented design principles to documentation inheritance.
-    - If behavior doesn't apply to every inheritor, don't document it in the base/provider.
-  - Document differences instead of using `<inheritdoc/>` when there is a major behavior change.
 - Use `<para>` when multiple paragraphs are needed to make a documentation section readable.
   - Never use `<para>` in single-paragraph sections.
 - For generic overloads, don't add "strongly-typed" or similar qualifiers to distinguish them from non-generic overloads. Let the type parameter references speak for themselves.
@@ -94,7 +88,10 @@ applyTo: "{**/*.cs,src/**/README.md,src/**/*.csproj}"
 
 ### Parameters
 
-- Use `<param name="...">` to describe method parameters, but only if they're not redundant.
+- Remove `<param>` elements that restate information evident from the parameter types and names.
+  This is an optional element, but if one parameter is needs docs, C# compiler requires them for all parameters.
+- Improve parameter types and names before documenting them.
+- Use `<param name="...">` to describe method parameters.
   - The description should be a noun phrase that doesn't specify the data type.
   - Begin with an introductory article.
   - If the parameter is a flag enum, start the description with "A bitwise combination of the enumeration values that specifies...".
@@ -102,9 +99,6 @@ applyTo: "{**/*.cs,src/**/README.md,src/**/*.csproj}"
   - If the parameter is a Boolean, the wording should be of the form "`<see langword="true" />` to ...; otherwise, `<see langword="false" />`.".
   - If the parameter is an "out" parameter, the wording should be of the form
     `When this method returns, contains .... This parameter is treated as uninitialized.`.
-- Try improving parameter types and names before documenting them.
-- Remove all `<param>` elements if they restate information evident from parameter types and names.
-  This is an optional element, but if one parameter is documented, all must be documented as well.
 - Use `<paramref name="...">` to reference parameter names in documentation.
 
 ### Type Parameters
@@ -139,8 +133,45 @@ applyTo: "{**/*.cs,src/**/README.md,src/**/*.csproj}"
 
 - Use `<exception cref="...">` to document exceptions thrown by constructors, properties, indexers, methods, operators, and events.
 - Document all exceptions thrown directly by the member.
-- For exceptions thrown by nested members, document only the exceptions users are most likely to encounter.
+- For exceptions thrown by the callees of the member
+  - Document the API-level exceptions users are likely to encounter. E.g. a member passing an argument to a callee that
+    validates it and throws `ArgumentNullException` should have it documented.
+  - Don't document the low-level implementation exceptions that can be thrown by callees. E.g. don't document `ArithmeticException`
+    or its descendants.
+  - For missing validations that allow low-level exceptions to escape, see [Bugs](#bugs).
+- Sort exceptions alphabetically, as text lines, not type names, to reduce merge conflicts.
+  Users will use _Sort Selected Lines_ command to re-sort the exceptions quickly. This places `<exception cref="...">` sorted
+  by type name first, followed by `<inheritdoc path="/exception...']"/>` sorted by full type name second.
 - Don't document exceptions without evidence they're are actually thrown. Symmetry with other APIs is irrelevant and doesn't
   justify lack of evidence.
 - Describe the condition under which it's thrown.
   - Omit "Thrown if ..." or "If ..." at the beginning of the sentence.
+
+## InheritDoc
+
+- _Convert duplicated documentation elements to <inheritdoc/>_.
+- _Document interfaces and base classes and `<inheritdoc/>` in implementations and overrides_.
+  - If behavior doesn't apply to every inheritor, don't document it in the base/provider.
+- _Document members with the **most** parameters and `<inheritdoc cref="..."/>` in simplifying overloads/extensions_.
+  The C# compilers doesn't recognize `<inheritdoc>` as an equivalent of the `<param>` elements and forces all parameters
+  to be documented by the same element type. Documenting methods with the most parameters allows reusing their docs for
+  parameters in simpler overloads, but not the other way around.
+- _Specify `path` to reuse specific XML elements rather than the entire doc_.
+  - Place `path` before `cref` to make `<inheritdoc>` more readable when mixed with regular elements.
+  - Use `<inheritdoc path="/summary" cref="..."/>` to reuse `<summary>`.
+  - Use `<inheritdoc path="/remarks" cref="..."/>` to reuse `<remarks>`.
+  - Use `<inheritdoc path="/param']" cref="..."/>` to reuse all `<param>` elements.
+  - Use `<inheritdoc path="/param[@name='{name}']" cref="..."/>` to reuse a specific `<param name="{name}">`.
+  - Use `<inheritdoc path="/typeparam" cref="..."/>` to reuse all `<typeparam>` elements.
+  - Use `<inheritdoc path="/typeparam[@name='{name}']" cref="..."/>` to reuse a specific `<typeparam name="{name}">`
+  - Use `<inheritdoc path="/exception']" cref="..."/>` to reuse all `<exception>` elements.
+  - Use `<inheritdoc path="/exception[@cref='T:{FullName}']" cref="..."/>` to reuse a specific `<exception cref="{Name}">`.
+- _Don't use `<inheritdoc/>` when there is a major behavior difference_.
+
+## Bugs
+
+- Use XML doc comments to describe the intended behavior, not the buggy behavior.
+- Create explicit bug tests as described in `test.instructions.md` instead.
+- Don't create explicit bug tests for bugs in code outside of this repo.
+- Verify that bug fixes match the documented intended behavior and make bug tests pass.
+

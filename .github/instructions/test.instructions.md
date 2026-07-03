@@ -10,7 +10,7 @@ applyTo: "test/**/*.cs"
 
 ## Terminology
 
-- **SUT** means system under test. In C#, it's a single type type with behavior, typically a `class` or a `struct`.
+- **SUT** means system under test. In C#, it's a single type with behavior, typically a `class` or a `struct`.
 - **Target** means _member of the SUT_. In C#, it's a single constructor, method, property or event.
 
 ## Test Projects
@@ -247,6 +247,9 @@ applyTo: "test/**/*.cs"
 
 ## Test Methods
 
+- **Test names should accurately describe the expected behavior of the target**.
+  - Say _rethrows_ only when the target is expected to have a `throw` statement; if not, say _propagates_.
+
 - **Test names should form valid English sentences when read together with the class names**.
   For example `TraceTest.Constructor.ThrowsArgumentNullExceptionWhenTypeIsNull`.
   - _Describe the SUT's behavior, not the test mechanics_.
@@ -262,7 +265,7 @@ applyTo: "test/**/*.cs"
   - Inheritance alone is not a separate logical aspect and shouldn't be tested separately.
 
 - **Order test methods so that collapsed definitions form description of the SUT**, mirroring its doc
-  comments and implementation.
+  comments and implementation. These rules are for _ordering_ tests, not for _creating_ or _keeping_ them.
   - Place tests describing default/most common behavior first.
     They serve as an executable equivalent of the `<summary>`.
   - Place tests of inputs, edge cases and outputs next. 
@@ -399,17 +402,22 @@ applyTo: "test/**/*.cs"
   for API details.
 
 - **Test argument validation logic** - it's part of SUT's API.
-  - _Create explicit tests for missing argument validation_ that can cause `NullReferenceException`, etc. in consuming members.
-    Missing argument validation is a bug in SUT.
+  - _Create explicit tests for missing argument validation_ that can cause `NullReferenceException`, etc. in the consuming
+    members of SUT - missing argument validation is a bug in SUT. See the additional rules for more:
+    - _Don't test what SUT doesn't do_
+    - _Don't create explicit tests for unfixed bugs in callee code_.
   - _Test `null`, empty, etc. as distinct inputs when validation rejects more than one_. A guard like `string.IsNullOrEmpty(x)`
     collapses several conventionally-distinct inputs into a single branch. Test each rejected category - `null`, `""`, and
     whitespace for `IsNullOrWhiteSpace` - with a `[Theory, InlineData(null), InlineData("")]`. This proves the right guard
     was invoked and rules out easy common mistakes, such as missing the empty-string check when testing only with `null`,
     or missing the `null` check when testing only with `string.Empty`.
 
-- **Use strongest xUnit assertions available**.
+- **Use strongest assertions available**.
   - _Prefer `Assert.Same` over `Assert.Equal`_ when asserting on unique test instances that neither SUT nor test logic replace.
   - _Prefer Collection/String/Span/Etc. `Assert` methods over `Assert.True`_.
+  - _Define test types instead of reusing types SUT may handle specifically_. E.g.
+    - Instead of reusing `InvalidOperationException` to test exception propagation, create a nested `TestException` class.
+    - Instead of reusing `int` and `string` to test collections, create nested `TestKey` and `TestValue` classes or structs.
 
 - **Minimize cross-member dependencies in assertions**. Each other-member call inside an assertion couples the target's
   tests to that member's correctness; a bug in one target should fail as few unrelated tests as possible.
@@ -528,9 +536,12 @@ Use it both to evaluate individual tests and to find gaps in the test suite.
     fail unless the corresponding `Equals_T` test also fails — delete the caller variant and trust the callee's tests.
     Exception: distinct argument-validation categories (`null`, empty, whitespace) are covered per _Test argument validation logic_.
 - **Reduce tests to fewest elements**: 
-  - Remove tests that cannot fail independently.
+  - _Remove or combine tests that cannot fail independently_. This is a symptom of attempting to separately test aspects
+    a single logical responsibility of the target. E.g. a test verifying that target returns an expected result from an
+    internal collection and a separate test verifying that targets uses case-sensitive search cannot fail independently.
+    Such tests should be combined into one.
   - Before writing a test for a branch or guard, verify that the branch is reachable independently of the paths already covered.
-  - Don't create tests for consistency or structural symmetry. API design principles don't apply to tests.
+  - Don't create tests for consistency, parity or structural symmetry. API design principles don't apply to tests.
 
 ## Special Cases
 
@@ -574,7 +585,10 @@ Use it both to evaluate individual tests and to find gaps in the test suite.
   - **Create explicit tests to demonstrate unfixed SUT bugs**.
     - `{Reason}` should be `SUT bug. {brief explanation}`.
     - Name the test for the expected post-fix behavior (e.g. `IsSymmetric`), not for the bug.
-    - The _Don't test what SUT doesn't do_ rule doesn't apply to unfixed bug tests.
+    - The _Don't test what SUT doesn't do_ rule doesn't apply to bugs caused by code missing from SUT.
+  - **Don't create explicit tests for unfixed bugs in callee code** - the _Don't test what SUT doesn't do_ rule still applies
+    to callee bugs. E.g. SUT passing an argument to a callee that dereferences it without a `null` guard, is a bug in the
+    callee. It's out of scope for SUT and should have an explicit test in the callee's test suite instead.
   - **Create explicit tests impossible to implement due to SUT testability limitations**.
     - Include `// TODO: SUT testability limitation. {brief explanation}`.
     - Have them `throw new NotImplementedException()`.
@@ -587,6 +601,8 @@ Use it both to evaluate individual tests and to find gaps in the test suite.
   - **Include detailed explanation of the exclusion in the body of the test method**.
     - Add comments to explain _why_ the test code demonstrates a problem.
     - Use `Assert` messages, when available.
+  - **Remove explicit tests when their `{Reason}` is no longer valid**, such as when a missing logic previously documented
+    as a bug is now unnecessary based on latest `*.instructions.md` or docs.
 - **Consider fixing problems documented by explicit tests when changing SUT**.
   Any change in SUT should evaluate fixing the problems already documented by the existing tests.
 - **Don't fix problems documented by explicit tests when putting SUT under test**.
@@ -616,8 +632,9 @@ Use it both to evaluate individual tests and to find gaps in the test suite.
   They are also often fragile, producing flakey results and difficult to modify over time. Instead of integration tests,
   strive to unit test each product type in isolation of its dependencies.
 
-- **Don't commit test files, create them in code instead**
-  When a test requires a file, generate it like any other test input in code. Don't hard-code it by committing it.
+- **Don't hard-code/commit test files, generate them on-the-fly in tests**
+  - Generate test file contents with appropriate `Fuzzy` values.
+  - Replace existing hard-coded/committed test files with file-generation logic.
 
 - **Generate unique paths for test files, if possible**
   When SUT accepts file names or paths, generate unique file or directory names to avoid sharing test fixture between tests.
