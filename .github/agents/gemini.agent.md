@@ -1,6 +1,7 @@
 ---
 description: "Sub-agent using latest Gemini model."
 tools: [agent, execute, read, search, web]
+agents: ["Explore"]
 model: ["Gemini 3.1 Pro (Preview)"]
 ---
 
