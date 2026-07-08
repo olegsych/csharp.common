@@ -1,7 +1,7 @@
 ---
 description: "Coordinates iterative coding and review until the code is ready."
 tools: [agent, execute, read, search, web]
-agents: ["Explore", "reviewer"]
+agents: ["coder", "reviewer"]
 ---
 
 **Understand `.github/copilot-instructions.md` before doing anything else**.
